@@ -1,0 +1,5 @@
+node_modules/
+*.log
+.last_*
+.botrounds_*
+channels/

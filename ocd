@@ -1,0 +1,25 @@
+#!/bin/bash
+# ocd = OpenCode + Discord
+# 啟動 TUI（終端機）+ Discord bridge，DC 訊息直接出現在終端機上
+
+BRIDGE="$HOME/.opencode/discord-bridge.sh"
+LOG="$HOME/.opencode/discord-bridge.log"
+PORT=4096
+
+# Kill old processes
+pkill -f discord-bridge.sh 2>/dev/null
+
+# Wait for TUI server to be ready, then start bridge
+(
+  # Wait until TUI server is up
+  for i in $(seq 1 30); do
+    curl -s --max-time 1 -o /dev/null "http://127.0.0.1:$PORT" 2>/dev/null && break
+    sleep 1
+  done
+  # Start bridge
+  nohup "$BRIDGE" > "$LOG" 2>&1 &
+  echo "[ocd] Discord bridge started (PID $!)" >> "$LOG"
+) &
+
+# Start TUI (foreground, takes over terminal)
+exec opencode --port "$PORT" "$@"
