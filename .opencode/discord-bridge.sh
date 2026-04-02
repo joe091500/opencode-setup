@@ -5,7 +5,7 @@
 # - Bot 互動: 其他 bot @本 bot → 回覆，10 輪上限
 # - TUI 同步: /tui/append-prompt + /tui/submit-prompt
 
-TOKEN="YOUR_DISCORD_BOT_TOKEN_HERE"
+TOKEN=""YOUR_DISCORD_BOT_TOKEN_HERE"
 BOT_ID="1488924087941075035"
 OWNER_ID="686830446587150364"
 STATE_DIR="/Users/tingchun/.config/opencode/channels/discord"
