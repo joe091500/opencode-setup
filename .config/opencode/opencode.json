@@ -10,9 +10,14 @@
       "type": "local",
       "command": ["bun", "run", "/Users/tingchun/.claude/plugins/cache/claude-plugins-official/discord/0.0.4/server.ts"],
       "environment": {
-        "DISCORD_BOT_TOKEN": ""YOUR_DISCORD_BOT_TOKEN_HERE",
+        "DISCORD_BOT_TOKEN": "YOUR_DISCORD_BOT_TOKEN_HERE",
         "DISCORD_STATE_DIR": "/Users/tingchun/.config/opencode/channels/discord"
       }
+    },
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "@anthropic-ai/mcp-server-playwright@latest"],
+      "environment": {}
     }
   },
   "agent": {

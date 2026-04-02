@@ -136,6 +136,60 @@ cat ~/.openclaw/cron/jobs.json
 2. Changes are consistent across all affected files
 3. No debug code left behind
 
+## Skill Commands（gstack + 設計系統）
+
+你有 238 個 skill commands 可用（`~/.opencode/command/` 目錄下）。這些 skill 來自 [gstack](https://github.com/garrytan/gstack)，原本為 Claude Code 寫的，但你也能用。
+
+### 工具名稱映射（重要）
+
+Skill 指令中提到的 Claude Code 工具名，對應你的 OpenCode 工具如下：
+
+| Skill 中寫的 | 你該怎麼做 |
+|-------------|-----------|
+| `Read` / `Read tool` | 用你的 file read 工具讀檔案 |
+| `Write` / `Write tool` | 用你的 file write 工具建立檔案 |
+| `Edit` / `Edit tool` | 用你的 file edit 工具修改檔案（string replacement） |
+| `Bash` / `Bash tool` | 用你的 shell/bash 工具執行指令 |
+| `Glob` / `Glob tool` | 用你的 file search 或用 bash 跑 `find`/`fd` |
+| `Grep` / `Grep tool` | 用你的 content search 或用 bash 跑 `rg`/`grep` |
+| `Agent` / `Agent tool` | 你沒有 ad-hoc agent spawning，改用以下替代方案：(1) 直接在當前 context 自己做 (2) 切到對應的 agent profile（Ctrl+X 快捷鍵）(3) 用 bash 執行獨立腳本 |
+| `WebSearch` | 用 bash 呼叫 `curl` 搭配搜尋 API，或告訴用戶你無法搜尋網路 |
+| `AskUserQuestion` | 直接在回覆中提問，等用戶回答 |
+| `TaskCreate`/`TaskUpdate` | 你沒有 task 工具，改用文字列表追蹤進度 |
+
+### 瀏覽器工具
+
+你有 Playwright MCP 可用。如果 skill 提到 `browse` daemon 或螢幕截圖：
+- 用 MCP Playwright 工具（browser_navigate, browser_snapshot, browser_take_screenshot 等）
+- 或用 bash 呼叫 gstack browse 二進位：`~/.claude/skills/gstack/browse/dist/browse`
+
+### 常用 gstack skills
+
+| Skill | 用途 | 觸發方式 |
+|-------|------|---------|
+| `/browse` | 無頭瀏覽器 QA 測試 | 測試網頁、截圖、互動 |
+| `/qa` | 系統化 QA 測試 + 修 bug | 全面測試 + 修復 |
+| `/qa-only` | 只測試不修 | 產出報告 |
+| `/review` | PR 審查 | Landing 前審 diff |
+| `/ship` | 建 PR + push | 完成後部署 |
+| `/investigate` | 系統化除錯 | 追根因 |
+| `/design-review` | 設計 QA | 找視覺問題 + 修 |
+| `/health` | 程式碼品質分數 | 綜合健康檢查 |
+| `/cso` | 安全審計 | 全面安全掃描 |
+| `/plan-ceo-review` | CEO 模式審計劃 | 挑戰假設、擴大範圍 |
+| `/plan-eng-review` | 工程審查計畫 | 架構、邊界、測試 |
+| `/polish` | 最終品質打磨 | 出貨前微調 |
+| `/distill` | 簡化設計 | 去除不必要複雜度 |
+| `/animate` | 加動效 | 微互動、過場 |
+| `/colorize` | 加色彩 | 讓 UI 更活潑 |
+
+### Skill 執行注意事項
+
+1. Skill 內容是指引，不是死板的步驟 — 根據你能用的工具靈活執行
+2. 遇到 `Agent tool` 相關指令時，自己直接做就好，不需要另開 agent
+3. 遇到 `WebSearch` 時，如果無法搜尋就告知用戶
+4. 所有 file 操作（read/write/edit/glob/grep）你都有對應工具，直接用
+
 ## Response Style
 
 - Be concise and direct
